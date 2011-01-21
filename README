@@ -1,0 +1,7 @@
+=========
+bitlnotes
+=========
+
+A plugin which add the ability to store notes against users in bitlbee.
+
+Currently not complete; bitlbee doesn't yet have the hooks required, and this code isn't complete either :)
