@@ -5,3 +5,26 @@ bitlnotes
 A plugin which add the ability to store notes against users in bitlbee.
 
 Currently not complete; bitlbee doesn't yet have the hooks required, and this code isn't complete either :)
+
+
+Example session:
+
+* Users on &bitlbee: @Flexo +nick @root 
+<Flexo> notes nick list
+<root> No notes set for nick.
+<Flexo> notes nick add likes chocolate
+<root> Added note for nick.
+<Flexo> note nick add also likes tea
+<root> Added note for nick.
+<Flexo> notes nick list
+<root> Your notes for nick:
+<root> 0. likes chocolate
+<root> 1. also likes tea
+<Flexo> notes nick del 1
+<root> Deleted note 1 for nick.
+<Flexo> notes nick list
+<root> Your notes for nick:
+<root> 0. likes chocolate
+<Flexo> save
+<root> Configuration saved
+
