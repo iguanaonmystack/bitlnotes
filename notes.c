@@ -12,8 +12,8 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #include "bitlbee.h"
@@ -95,11 +95,23 @@ void notes_load(irc_t *irc, char * data) {
     char * acc_type = NULL;
     char * acc_handle = NULL;
     char * handle = NULL;
+    gboolean firstline = TRUE;
     GList * notes = NULL; /* empty list */
     if (data == NULL) return;
     
     lines_v = g_strsplit(data, "\n", 0);
     for (line_p = lines_v; *line_p != 0; line_p++) {
+        if (firstline) {
+            /* first line is the format version */
+            /* At the moment, the only version is 1 */
+            if (g_strcmp0(*line_p, "1") != 0) {
+                irc_usermsg(irc, "Error loading notes: "
+                    "unknown format version: %s", *line_p);
+                break;
+            }
+            firstline = FALSE;
+            continue;
+        }
         if (g_strcmp0(*line_p, "") == 0) {
             /* end of block */
             if (handle == NULL)
@@ -138,7 +150,7 @@ char * notes_save(irc_t *irc) {
     GHashTableIter iter;
     gpointer key, value;
     
-    serialised = g_string_new("");
+    serialised = g_string_new("1\n"); // save format version
     g_hash_table_iter_init(&iter, users_notes);
     while (g_hash_table_iter_next(&iter, &key, &value)) {
         GList * cursor = g_list_first((GList*)value);
